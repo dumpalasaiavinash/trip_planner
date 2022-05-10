@@ -1,0 +1,220 @@
+{% extends 'base2.html' %}
+{% load staticfiles %}
+{% load static %}
+
+{% block extrahead %}
+
+<style>
+
+  .history-tl-container{
+    font-family: "Roboto",sans-serif !important;
+    width:50% !important;
+    margin:auto !important;
+    display:block !important;
+    position:relative !important;
+  }
+  .history-tl-container ul.tl{
+      margin:20px 0 !important;
+      padding:0 !important;
+      display:inline-block !important;
+
+  }
+  .history-tl-container ul.tl li{
+      list-style: none !important;
+      margin:auto !important;
+      margin-left:200px !important;
+      min-height:50px !important;
+      /*background: rgba(255,255,0,0.1) !important;*/
+      border-left:1px dashed #86D6FF !important;
+      padding:0 0 50px 30px !important;
+      position:relative !important;
+  }
+  .history-tl-container ul.tl li:last-child{ border-left:0 !important;}
+  .history-tl-container ul.tl li::before{
+      position: absolute !important;
+      left: -15px !important;
+      top: -5px !important;
+      content: " " !important;
+      border: 7px solid rgba(255, 255, 255, 0.74) !important;
+      border-radius: 500% !important;
+      background: #258CC7 !important;
+      height: 30px !important;
+      width: 30px !important;
+      transition: all 500ms ease-in-out !important;
+
+  }
+  .history-tl-container ul.tl li:hover::before{
+      border-color:  #258CC7 !important;
+      transition: all 1000ms ease-in-out !important;
+  }
+  ul.tl li .item-title{
+    color:rgba(0,0,0,1);
+  }
+  ul.tl li .item-detail{
+      color:rgba(0,0,0,0.5) !important;
+      font-size:12px !important;
+  }
+  ul.tl li .timestamp{
+      color: #8D8D8D !important;
+      position: absolute !important;
+      width:100px !important;
+      left: -30%; !important
+      text-align: right !important;
+      font-size: 12px !important;
+  }
+
+  .container2 {
+    position: relative;
+    margin: auto;
+    overflow: hidden;
+    width: 75%;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
+    height: 740px;
+    background: white;
+    border-radius: 10px;
+    border: 1px solid rgb(220,220,220);
+  }
+
+  img {
+    width: 58vh;
+    height: 44vh;
+    margin-top: 1%;
+    margin-left: 5%;
+    border-radius: 3px;
+  }
+
+  .product {
+    position: absolute;
+    width: 40%;
+    height: 100%;
+    top: 22%;
+    left: 60%;
+  }
+
+  .desc {
+    text-transform: none;
+    letter-spacing: 0;
+    margin-bottom: 17px;
+    color: $dark;
+    font-size: .7em;
+    line-height: 1.6em;
+    margin-right: 25px;
+    text-align: justify;
+  }
+
+button {
+  width:25%;
+  background: #FFB800;
+  padding: 10px;
+  border-radius: 30px;
+  letter-spacing: 1px;
+  color: white;
+  border:none;
+  cursor: pointer;
+  &:hover {
+    transition: all .4s ease-in-out;
+  }
+}
+
+
+.sizes {
+  display: grid;
+  color: $pink;
+  grid-template-columns: repeat(auto-fill, 30px);
+  width: 60%;
+  grid-gap: 4px;
+  margin-left: 20px;
+  margin-top: 5px;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.pick {
+  margin-top: 11px;
+  margin-bottom:0;
+  margin-left: 20px;
+}
+
+.size {
+  padding: 9px;
+  border: 1px solid $light;
+  font-size: 0.7em;
+  text-align: center;
+  &:hover{
+    background: $rose;
+    color: $white;
+    transition: all .4s ease-in-out;
+  }
+}
+
+.focus{
+  background: $rose;
+  color: $white;
+}
+
+
+
+</style>
+
+{% endblock %}
+
+{% block travel %}
+<h1 style="margin-top:-35%;" class="mb-4" data-scrollax="properties: { translateY: '30%', opacity: 1.6 }">{{ plan_name }} tour plan</h1>
+<p style="margin-top:0%;" class="mb-4" data-scrollax="properties: { translateY: '30%', opacity: 1.6 }">{{checkin}} to {{checkout}}</p>
+<p style="margin-top:0%;" class="mb-4" data-scrollax="properties: { translateY: '30%', opacity: 1.6 }">{{days}} day(s)</p>
+{% endblock %}
+
+{% block body %}
+<div id="navbar2" style="box-shadow: 0 4px 2px -2px gray;width:100%">
+  <div style="margin-left: 30%;">
+    <a style="color:#222831" class="active" href="{% url 'home:plan' %}{% if id %}?id={{ id }}{% endif %}">Overview</a>
+    <a href="{% url 'home:timeline' %}{% if id %}?id={{ id }}{% endif %}">Timeline</a>
+    <a style="color:#222831" href="{% url 'home:maps' %}{% if id %}?id={{ id }}{% endif %}">Day-Wise Maps</a>
+  </div>
+</div>
+<br><br><br>
+
+<div class="" style="font-weight:bold; margin-left:22%; font-size:200%;">
+  {{ plan_name }} tour plan
+</div>
+<span style="font-size:100%;margin-left:22%">{{checkin}} to {{checkout}} - {{days}} day(s)</span><br><br>
+
+
+{% for p in plan.finalplan %}
+  {% for d in p.places %}
+  <div class="" style="font-weight:bold; margin-left:22%; font-size:200%;">
+    {{d.day}}
+  </div>
+
+  <div class="history-tl-container" style='line-height:1.3em; min-width:920px;'>
+    <ul class="tl">
+
+      {% for l in d.places %}
+      <li class="tl-item" ng-repeat="item in retailer_history">
+        <div class="timestamp">
+          {{d.day}}<br> {{l.starttime}} - {{l.endtime}}
+          <!-- <br><br> Next: {{l.next}} -->
+        </div>
+        <div class="item-title">{{ l.name }}</div>
+        <div class="item-detail">
+          type:
+          {% for c in l.type %} {{c }}
+          {% endfor %} <br>
+          rating: {{l.rating}}</div>
+      </li>
+      {% endfor %}
+
+
+
+    </ul>
+    <br><br><br><br>
+
+  </div>
+
+  {% endfor %}
+{% endfor %}
+
+
+<br><br><br>
+{% endblock %}

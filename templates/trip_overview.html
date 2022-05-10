@@ -1,0 +1,1723 @@
+{% extends 'base2.html' %}
+{% load staticfiles %}
+{% load static %}
+
+{% block extrahead %}
+
+<style>
+
+  .history-tl-container{
+    font-family: "Roboto",sans-serif !important;
+    width:50% !important;
+    margin:auto !important;
+    display:block !important;
+    position:relative !important;
+  }
+  .history-tl-container ul.tl{
+      margin:20px 0 !important;
+      padding:0 !important;
+      display:inline-block !important;
+
+  }
+  .history-tl-container ul.tl li{
+      list-style: none !important;
+      margin:auto !important;
+      margin-left:200px !important;
+      min-height:50px !important;
+      /*background: rgba(255,255,0,0.1) !important;*/
+      border-left:1px dashed #86D6FF !important;
+      padding:0 0 50px 30px !important;
+      position:relative !important;
+  }
+  .history-tl-container ul.tl li:last-child{ border-left:0 !important;}
+  .history-tl-container ul.tl li::before{
+      position: absolute !important;
+      left: -15px !important;
+      top: -5px !important;
+      content: " " !important;
+      border: 7px solid rgba(255, 255, 255, 0.74) !important;
+      border-radius: 500% !important;
+      background: #258CC7 !important;
+      height: 30px !important;
+      width: 30px !important;
+      transition: all 500ms ease-in-out !important;
+
+  }
+  .history-tl-container ul.tl li:hover::before{
+      border-color:  #258CC7 !important;
+      transition: all 1000ms ease-in-out !important;
+  }
+  ul.tl li .item-title{
+    color:rgba(0,0,0,1);
+  }
+  ul.tl li .item-detail{
+      color:rgba(0,0,0,0.5) !important;
+      font-size:12px !important;
+  }
+  ul.tl li .timestamp{
+      color: #8D8D8D !important;
+      position: absolute !important;
+      width:100px !important;
+      left: -50%; !important
+      text-align: right !important;
+      font-size: 12px !important;
+  }
+
+  .container2 {
+    position: relative;
+    margin: auto;
+    overflow: hidden;
+    width: 75%;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
+    height: 740px;
+    background: white;
+    border-radius: 10px;
+    border: 1px solid rgb(220,220,220);
+  }
+
+  img {
+    width: 58vh;
+    height: 44vh;
+    margin-top: 1%;
+    margin-left: 5%;
+    border-radius: 3px;
+  }
+
+  .product {
+    position: absolute;
+    width: 40%;
+    height: 100%;
+    top: 22%;
+    left: 60%;
+  }
+
+  .desc {
+    text-transform: none;
+    letter-spacing: 0;
+    margin-bottom: 17px;
+    color: $dark;
+    font-size: .7em;
+    line-height: 1.6em;
+    margin-right: 25px;
+    text-align: justify;
+  }
+
+button {
+  width:25%;
+  background: #FFB800;
+  padding: 10px;
+  border-radius: 30px;
+  letter-spacing: 1px;
+  color: white;
+  border:none;
+  cursor: pointer;
+  &:hover {
+    transition: all .4s ease-in-out;
+  }
+}
+
+
+.sizes {
+  display: grid;
+  color: $pink;
+  grid-template-columns: repeat(auto-fill, 30px);
+  width: 60%;
+  grid-gap: 4px;
+  margin-left: 20px;
+  margin-top: 5px;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.pick {
+  margin-top: 11px;
+  margin-bottom:0;
+  margin-left: 20px;
+}
+
+.size {
+  padding: 9px;
+  border: 1px solid $light;
+  font-size: 0.7em;
+  text-align: center;
+  &:hover{
+    background: $rose;
+    color: $white;
+    transition: all .4s ease-in-out;
+  }
+}
+
+.focus{
+  background: $rose;
+  color: $white;
+}
+
+/* --------------------------------
+
+Primary style
+
+-------------------------------- */
+html * {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+*, *:after, *:before {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+a {
+  color: #acb7c0;
+  text-decoration: none;
+  font-family: "Open Sans", sans-serif;
+}
+
+img {
+  max-width: 100%;
+}
+
+h1, h2 {
+  font-family: "Open Sans", sans-serif;
+  font-weight: bold;
+}
+
+/* --------------------------------
+
+Modules - reusable parts of our design
+
+-------------------------------- */
+.cd-container {
+  /* this class is used to give a max-width to the element it is applied to, and center it horizontally when it reaches that max-width */
+  width: 90%;
+  max-width: 1170px;
+  margin: 0 auto;
+}
+.cd-container::after {
+  /* clearfix */
+  content: '';
+  display: table;
+  clear: both;
+}
+
+/* --------------------------------
+
+Main components
+
+-------------------------------- */
+header {
+  height: 200px;
+  line-height: 200px;
+  text-align: center;
+  background: #303e49;
+}
+header h1 {
+  color: #ffffff;
+  font-size: 18px;
+  font-size: 1.125rem;
+}
+@media only screen and (min-width: 1170px) {
+  header {
+    height: 300px;
+    line-height: 300px;
+  }
+  header h1 {
+    font-size: 24px;
+    font-size: 1.5rem;
+  }
+}
+
+#cd-timeline {
+  position: relative;
+  padding: 2em 0;
+  margin-top: 2em;
+  margin-bottom: 2em;
+}
+#cd-timeline::before {
+  /* this is the vertical line */
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 18px;
+  height: 100%;
+  width: 4px;
+  background: #d7e4ed;
+}
+@media only screen and (min-width: 1170px) {
+  #cd-timeline {
+    margin-top: 3em;
+    margin-bottom: 3em;
+  }
+  #cd-timeline::before {
+    left: 50%;
+    margin-left: -2px;
+  }
+}
+
+.cd-timeline-block {
+  position: relative;
+  margin: 2em 0;
+}
+.cd-timeline-block::after {
+  clear: both;
+  content: "";
+  display: table;
+}
+.cd-timeline-block:first-child {
+  margin-top: 0;
+}
+.cd-timeline-block:last-child {
+  margin-bottom: 0;
+}
+@media only screen and (min-width: 1170px) {
+  .cd-timeline-block {
+    margin: 4em 0;
+  }
+  .cd-timeline-block:first-child {
+    margin-top: 0;
+  }
+  .cd-timeline-block:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.cd-timeline-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 4px #ffffff, inset 0 2px 0 rgba(0, 0, 0, 0.08), 0 3px 0 4px rgba(0, 0, 0, 0.05);
+}
+.cd-timeline-img img {
+  display: block;
+  width: 24px;
+  height: 24px;
+  position: relative;
+  left: 50%;
+  top: 50%;
+  margin-left: -12px;
+  margin-top: -12px;
+}
+.cd-timeline-img.cd-picture {
+  background: #75ce66;
+}
+.cd-timeline-img.cd-picture {
+  background: #c03b44;
+}
+.cd-timeline-img.cd-picture {
+  background: #f0ca45;
+}
+@media only screen and (min-width: 1170px) {
+  .cd-timeline-img {
+    width: 60px;
+    height: 60px;
+    left: 50%;
+    margin-left: -30px;
+    /* Force Hardware Acceleration in WebKit */
+    -webkit-transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+  }
+  .cssanimations .cd-timeline-img.is-hidden {
+    visibility: hidden;
+  }
+  .cssanimations .cd-timeline-img.bounce-in {
+    visibility: visible;
+    -webkit-animation: cd-bounce-1 0.6s;
+    -moz-animation: cd-bounce-1 0.6s;
+    animation: cd-bounce-1 0.6s;
+  }
+}
+
+@-webkit-keyframes cd-bounce-1 {
+  0% {
+    opacity: 0;
+    -webkit-transform: scale(0.5);
+  }
+  60% {
+    opacity: 1;
+    -webkit-transform: scale(1.2);
+  }
+  100% {
+    -webkit-transform: scale(1);
+  }
+}
+@-moz-keyframes cd-bounce-1 {
+  0% {
+    opacity: 0;
+    -moz-transform: scale(0.5);
+  }
+  60% {
+    opacity: 1;
+    -moz-transform: scale(1.2);
+  }
+  100% {
+    -moz-transform: scale(1);
+  }
+}
+@keyframes cd-bounce-1 {
+  0% {
+    opacity: 0;
+    -webkit-transform: scale(0.5);
+    -moz-transform: scale(0.5);
+    -ms-transform: scale(0.5);
+    -o-transform: scale(0.5);
+    transform: scale(0.5);
+  }
+  60% {
+    opacity: 1;
+    -webkit-transform: scale(1.2);
+    -moz-transform: scale(1.2);
+    -ms-transform: scale(1.2);
+    -o-transform: scale(1.2);
+    transform: scale(1.2);
+  }
+  100% {
+    -webkit-transform: scale(1);
+    -moz-transform: scale(1);
+    -ms-transform: scale(1);
+    -o-transform: scale(1);
+    transform: scale(1);
+  }
+}
+.cd-timeline-content {
+  position: relative;
+  margin-left: 60px;
+  background: #ffffff;
+  border-radius: 0.25em;
+  padding: 1em;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);;
+}
+.cd-timeline-content::after {
+  clear: both;
+  content: "";
+  display: table;
+}
+.cd-timeline-content h2 {
+  color: #303e49;
+}
+.cd-timeline-content p, .cd-timeline-content .cd-read-more, .cd-timeline-content .cd-date {
+  font-size: 13px;
+  font-size: 0.8125rem;
+}
+.cd-timeline-content .cd-read-more, .cd-timeline-content .cd-date {
+  display: inline-block;
+}
+.cd-timeline-content p {
+  margin: 1em 0;
+  line-height: 1.6;
+}
+.cd-timeline-content .cd-read-more {
+  float: right;
+  padding: .4em 1em;
+  background: #dc3545;
+  color: #ffffff;
+  border-radius: 0.25em;
+}
+.no-touch .cd-timeline-content .cd-read-more:hover {
+  background-color: #bac4cb;
+}
+.cd-timeline-content .cd-date {
+  float: left;
+  padding: .8em 0;
+  opacity: 1;
+}
+.cd-timeline-content::before {
+  content: '';
+  position: absolute;
+  top: 16px;
+  right: 100%;
+  height: 0;
+  width: 0;
+  border: 7px solid transparent;
+  border-right: 7px solid #ffffff;
+}
+@media only screen and (min-width: 768px) {
+  .cd-timeline-content h2 {
+    font-size: 20px;
+    font-size: 1.25rem;
+  }
+  .cd-timeline-content p {
+    font-size: 16px;
+    font-size: 1rem;
+  }
+  .cd-timeline-content .cd-read-more, .cd-timeline-content .cd-date {
+    font-size: 14px;
+    font-size: 0.875rem;
+  }
+}
+@media only screen and (min-width: 1170px) {
+  .cd-timeline-content {
+    margin-left: 0;
+    padding: 1.6em;
+    width: 45%;
+  }
+  .cd-timeline-content::before {
+    top: 24px;
+    left: 100%;
+    border-color: transparent;
+    border-left-color: #ffffff;
+  }
+  .cd-timeline-content .cd-read-more {
+    float: right;
+  }
+  .cd-timeline-content .cd-date {
+    position: absolute;
+    width: 100%;
+    left: 122%;
+    top: 6px;
+    font-size: 16px;
+    font-size: 1rem;
+  }
+  .cd-timeline-block:nth-child .cd-timeline-content {
+    float: left;
+  }
+  .cd-timeline-block:nth-child .cd-timeline-content::before {
+    top: 24px;
+    left: auto;
+    right: 100%;
+    border-color: transparent;
+    border-right-color: #ffffff;
+  }
+  .cd-timeline-block:nth-child .cd-timeline-content .cd-read-more {
+    float: right;
+  }
+  .cd-timeline-block:nth-child .cd-timeline-content .cd-date {
+    left: auto;
+    right: 122%;
+    text-align: right;
+  }
+  .cssanimations .cd-timeline-content.is-hidden {
+    visibility: hidden;
+  }
+  .cssanimations .cd-timeline-content.bounce-in {
+    visibility: visible;
+    -webkit-animation: cd-bounce-2 0.6s;
+    -moz-animation: cd-bounce-2 0.6s;
+    animation: cd-bounce-2 0.6s;
+  }
+}
+
+@media only screen and (min-width: 1170px) {
+  /* inverse bounce effect on even content blocks */
+  .cssanimations .cd-timeline-block:nth-child(even) .cd-timeline-content.bounce-in {
+    -webkit-animation: cd-bounce-2-inverse 0.6s;
+    -moz-animation: cd-bounce-2-inverse 0.6s;
+    animation: cd-bounce-2-inverse 0.6s;
+  }
+}
+@-webkit-keyframes cd-bounce-2 {
+  0% {
+    opacity: 0;
+    -webkit-transform: translateX(-100px);
+  }
+  60% {
+    opacity: 1;
+    -webkit-transform: translateX(20px);
+  }
+  100% {
+    -webkit-transform: translateX(0);
+  }
+}
+@-moz-keyframes cd-bounce-2 {
+  0% {
+    opacity: 0;
+    -moz-transform: translateX(-100px);
+  }
+  60% {
+    opacity: 1;
+    -moz-transform: translateX(20px);
+  }
+  100% {
+    -moz-transform: translateX(0);
+  }
+}
+@keyframes cd-bounce-2 {
+  0% {
+    opacity: 0;
+    -webkit-transform: translateX(-100px);
+    -moz-transform: translateX(-100px);
+    -ms-transform: translateX(-100px);
+    -o-transform: translateX(-100px);
+    transform: translateX(-100px);
+  }
+  60% {
+    opacity: 1;
+    -webkit-transform: translateX(20px);
+    -moz-transform: translateX(20px);
+    -ms-transform: translateX(20px);
+    -o-transform: translateX(20px);
+    transform: translateX(20px);
+  }
+  100% {
+    -webkit-transform: translateX(0);
+    -moz-transform: translateX(0);
+    -ms-transform: translateX(0);
+    -o-transform: translateX(0);
+    transform: translateX(0);
+  }
+}
+@-webkit-keyframes cd-bounce-2-inverse {
+  0% {
+    opacity: 0;
+    -webkit-transform: translateX(100px);
+  }
+  60% {
+    opacity: 1;
+    -webkit-transform: translateX(-20px);
+  }
+  100% {
+    -webkit-transform: translateX(0);
+  }
+}
+@-moz-keyframes cd-bounce-2-inverse {
+  0% {
+    opacity: 0;
+    -moz-transform: translateX(100px);
+  }
+  60% {
+    opacity: 1;
+    -moz-transform: translateX(-20px);
+  }
+  100% {
+    -moz-transform: translateX(0);
+  }
+}
+@keyframes cd-bounce-2-inverse {
+  0% {
+    opacity: 0;
+    -webkit-transform: translateX(100px);
+    -moz-transform: translateX(100px);
+    -ms-transform: translateX(100px);
+    -o-transform: translateX(100px);
+    transform: translateX(100px);
+  }
+  60% {
+    opacity: 1;
+    -webkit-transform: translateX(-20px);
+    -moz-transform: translateX(-20px);
+    -ms-transform: translateX(-20px);
+    -o-transform: translateX(-20px);
+    transform: translateX(-20px);
+  }
+  100% {
+    -webkit-transform: translateX(0);
+    -moz-transform: translateX(0);
+    -ms-transform: translateX(0);
+    -o-transform: translateX(0);
+    transform: translateX(0);
+  }
+}
+
+
+body {
+  background-color: #fafafa;
+  width:101%;
+  overflow-x:hidden;
+}
+
+.overlay{
+  width:101%;
+}
+
+.accordion {
+  margin-top: -15%;
+  margin-bottom: -15%;
+  max-width: 30em;
+}
+
+.toggle {
+  display: none;
+}
+
+.option {
+  position: relative;
+  margin-bottom: 1em;
+}
+
+.title,
+.content {
+  -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
+  -webkit-transform: translateZ(0);
+          transform: translateZ(0);
+  -webkit-transition: all 0.2s;
+  transition: all 0.2s;
+}
+
+.title {
+  background: #fff;
+  padding: 1em;
+  display: block;
+  color: #7A7572;
+  font-weight: bold;
+}
+
+.title:after, .title:before {
+  content: '';
+  position: absolute;
+  right: 1.25em;
+  top: 1.25em;
+  width: 2px;
+  height: 0.75em;
+  background-color: #7A7572;
+  -webkit-transition: all 0.2s;
+  transition: all 0.2s;
+}
+
+.title:after {
+  -webkit-transform: rotate(90deg);
+          transform: rotate(90deg);
+}
+
+.content {
+  max-height: 0;
+  overflow: hidden;
+  background-color: #fff;
+}
+.content p {
+  font-size: 0.9em;
+  line-height: 1.5;
+}
+
+.toggle:checked + .title + .content {
+  max-height: 500px;
+  margin-top: -5%;
+  margin-bottom: 15%;
+}
+.toggle:checked + .title:before {
+  -webkit-transform: rotate(90deg) !important;
+          transform: rotate(90deg) !important;
+}
+
+.travel {
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  z-index:1;
+  background-color:rgba(255, 255, 255, 1);
+  border:1px solid #eee;
+  border-radius:3px;
+  width:25%;
+  position:absolute;
+  padding: 1%;
+  margin-top: 10%;
+}
+
+#scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+#listing {
+  position: absolute;
+  width: 300px;
+  height: 410px;
+  overflow: auto;
+  left: 23px;
+  top: 40px;
+  cursor: pointer;
+  overflow-x: hidden;
+}
+#findhotels {
+  font-size: 14px;
+}
+#locationField {
+  -webkit-box-flex: 1 1 190px;
+  -ms-flex: 1 1 190px;
+  flex: 1 1 190px;
+  margin: 0 8px;
+}
+#controls {
+  -webkit-box-flex: 1 1 140px;
+  -ms-flex: 1 1 140px;
+  flex: 1 1 140px;
+}
+#autocomplete {
+  width: 50%;
+}
+#country {
+  width: 100%;
+}
+.icontd{
+  width:20%;
+}
+.placeIcon {
+  width: 20px;
+  height: 34px;
+  margin-left: 30%;
+  margin-top: 10%;
+  margin-bottom:10%;
+}
+.hotelname{
+  margin-left: 3%;
+}
+.hotelIcon {
+  width: 24px;
+  height: 24px;
+}
+#resultsTable {
+  border-collapse: collapse;
+  width: 100%;
+}
+#rating {
+  font-size: 13px;
+  font-family: Arial Unicode MS;
+}
+.iw_table_row {
+  height: 18px;
+}
+.iw_attribute_name {
+  font-weight: bold;
+  text-align: right;
+}
+.iw_table_icon {
+  text-align: right;
+}
+
+.form__list-item {
+  position: relative;
+  vertical-align: top;
+  display: inline-block;
+  width: 50%;
+  padding: 0 .5rem;
+  margin-bottom: 1rem;
+}
+.form__list-item--full {
+  width: 100%;
+}
+.form__input {
+  border: 1px solid #ddd;
+  width: 100%;
+  border-radius: 2px;
+  outline: none;
+  font-size: 1rem;
+  padding: 0.94rem 1rem;
+  -webkit-transition: all 200ms;
+  transition: all 200ms;
+  font-family: 'Georgia';
+}
+.form__input:focus {
+  border-color: aquamarine;
+  box-shadow: 0 0 0 2px aquamarine inset;
+}
+.form__input:valid {
+  padding: 1.5rem 1rem .38rem;
+}
+.form__input:valid + .form__label {
+  font-size: .75rem;
+  top: .5rem;
+  opacity: 1;
+  z-index: 1;
+}
+.form__label {
+  position: absolute;
+  top: 1.25rem;
+  font-size: 1rem;
+  font-family: 'Georgia';
+  left: 1.5rem;
+  color: #999;
+  opacity: 0;
+  z-index: -1;
+  -webkit-transition: all 200ms;
+  transition: all 200ms;
+}
+
+/* Hide scrollbar for IE and Edge */
+#scrollbar {
+  -ms-overflow-style: none;
+}
+
+</style>
+<script src="jquery-3.4.1.min.js"></script>
+<link href='//fonts.googleapis.com/css?family=Roboto:200,400,600' rel='stylesheet' type='text/css'>
+<link href="https://fonts.googleapis.com/css?family=Libre+Baskerville" rel="stylesheet" type="text/css">
+<script src="https://kit.fontawesome.com/ea0619ce99.js" crossorigin="anonymous"></script>
+
+{% endblock %}
+
+{% block body %}
+
+  <!-- <div id="navbar2" style="box-shadow: 0 4px 2px -2px gray;width:100%">
+    <div style="margin-left: 36%;">
+      <a href="/overview#navbar2">Overview</a>
+       <a href="">Timeline</a>
+      <a style="color:#222831" href="/maps#navbar2">Day-Wise Maps</a>
+    </div>
+  </div> -->
+
+  <div id="navbar2" style="box-shadow: 0 4px 2px -2px gray;width:100%">
+    <div style="margin-left: 30%;">
+      <a class="active" href="{% url 'home:plan' %}{% if id %}?id={{ id }}{% endif %}">Overview</a>
+      <a style="color:#222831" href="{% url 'home:timeline' %}{% if id %}?id={{ id }}{% endif %}">Timeline</a>
+      <a style="color:#222831" href="{% url 'home:maps' %}{% if id %}?id={{ id }}{% endif %}">Day-Wise Maps</a>
+    </div>
+  </div>
+
+<div style="padding-top:3%;background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url({% static 'plan.jpg' %})" class="row">
+  <div id="scrollbar" style="height:500px;overflow-y:scroll;overflow-x:hidden;" class="col-7">
+    <div style="margin-bottom: -8%; margin-left:55%; font-weight: 500;font-size:17px;">
+      <span style="color: #6b9ee8">Start: </span>{{ start }}
+    </div>
+    <br>
+    <section style="width:100%;margin-left:14%;" id="cd-timeline" class="cd-container">
+      {% for plan in finalplan %}
+        <div class="cd-timeline-block">
+          <div class="cd-timeline-img cd-picture">
+            {% if plan.journey.0.mode == 'Fly' %}
+                <i style="color:white;margin-left:31%;margin-top:31%;font-size:24px;" class="fas fa-plane"></i>
+            {% elif plan.journey.0.mode == 'Train' %}
+                <i style="color:white;margin-left:31%;margin-top:31%;font-size:24px;" class="fas fa-subway"></i>
+            {% elif plan.journey.0.mode == 'Bus' %}
+                <i style="color:white;margin-left:31%;margin-top:31%;font-size:24px;" class="fas fa-bus"></i>
+            {% else %}
+                <i style="color:white;margin-left:31%;margin-top:31%;font-size:24px;" class="fas fa-car"></i>
+            {% endif %}
+          </div>
+
+          <div class="cd-timeline-content">
+            <div class="accordion">
+              <div class="option">
+                <input type="checkbox" id="toggle{{ forloop.counter }}" class="toggle" />
+                <label class="title" for="toggle{{ forloop.counter }}">{{ plan.place }}
+                <span class="latlng" style="display:none">{{ plan.lat }} {{ plan.lng }}</span>
+                </label>
+                <div class="content">
+                  <table style="width:100%;">
+                    <tr>
+                      <td style="width:48%;">
+                        <div class="form-group">
+                          <div class="form-field">
+                            <div class="icon"><span class="ion-ios-calendar"> Start Date</span></div>
+                            <input style="height:40px !important;" type="text" name="checkin" class="form-control checkin_date" placeholder="{{ plan.start|date:"j/n/Y" }}" autocomplete="off">
+                          </div>
+                        </div>
+                      </td>
+                      <td style="width:48%;padding-left:4%;">
+                        <div class="form-group">
+                          <div class="form-field">
+                            <div class="icon"><span class="ion-ios-calendar"> End Date</span></div>
+                            <input style="height:40px !important;" type="text" name="checkin" class="form-control checkin_date" placeholder="{{ plan.end|date:"j/n/Y" }}" autocomplete="off">
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </table>
+                  <a style="float:left;background:none;color:#6b9ee8" href="#stay" onclick="hotelFunc({{ forloop.counter }})" class="cd-read-more"> Find places to stay</a>
+                  <a style="margin-left:5%;margin-top:-11%;" href="#0" class="cd-read-more"><i class="far fa-trash-alt"> Remove from plan</i></a>    </div>
+              </div>
+            </div>
+            <span style="margin-top:-3.9%;margin-left:2%;" class="cd-date"><span id="btn{{ forloop.counter }}" style="cursor:pointer;color:#6b9ee8" onclick="show({{ forloop.counter }})">{{ plan.journey.0.mode }}: {{ plan.journey.0.time }}h +</span><br>{{ plan.start|date:"D, d M" }}</span>
+            <div style="overflow:visible;display:none;width:60%;" id='id{{ forloop.counter }}' class="cd-date travel">
+              <span style="padding:5%;color:#7a7572;font-weight:bold;">More options</span>
+              <table style="margin-left:5%;margin-top: 2%;width:90%;">
+                {% for opt in plan.journey %}
+                  <tr style="border-bottom:1px solid #ccc;border-top:1px solid #ccc;">
+                    <td style="width:35%;padding-top:4%;padding-bottom:2%;">
+                      {% if opt.mode == 'Fly' %}
+                          <i style="margin-left:40%;color:#6b9ee8;font-size:20px;" class="fas fa-plane"></i>
+                      {% elif opt.mode == 'Train' %}
+                          <i style="margin-left:40%;color:#6b9ee8;font-size:20px;" class="fas fa-subway"></i>
+                      {% elif opt.mode == 'Bus' %}
+                          <i style="margin-left:40%;color:#6b9ee8;font-size:20px;" class="fas fa-bus"></i>
+                      {% else %}
+                          <i style="margin-left:40%;color:#6b9ee8;font-size:20px;" class="fas fa-car"></i>
+                      {% endif %}
+                    </td>
+                    <td style="width:55%;padding-top:3%;padding-bottom:2%;">
+                       {{ opt.distance }} / {{ opt.time }}
+                    </td>
+                  </tr>
+                {% endfor %}
+              </table>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </section>
+      <div id="up" style=";margin-top:-3%;margin-bottom:3%;margin-left:55%; font-weight: 500;font-size:17px;">
+        <span id="stay" style="cursor: pointer;color:#6b9ee8">End: </span>{{ end.place }}
+        {% if end.journey.0.mode == 'Fly' %}
+            <i style="color:#6b9ee8; cursor:pointer" onclick="opt()" id="endsym" class="fas fa-plane"> +</i>
+        {% elif end.journey.0.mode == 'Train' %}
+            <i style="color:#6b9ee8; cursor:pointer" onclick="opt()" id="endsym" class="fas fa-subway"> +</i>
+        {% elif end.journey.0.mode == 'Bus' %}
+            <i style="color:#6b9ee8; cursor:pointer" onclick="opt()" id="endsym" class="fas fa-bus"> +</i>
+        {% else %}
+            <i style="color:#6b9ee8; cursor:pointer" onclick="opt()" id="endsym" class="fas fa-car"> +</i>
+        {% endif %}
+      </div>
+      <div style="width:30%;margin-left: 50%;margin-top: -2%;display:none;margin-bottom:5%;" id='opts' class="travel">
+        <span style="padding:5%;color:#7a7572;font-weight:bold;">More options</span>
+        <table style="margin-left:5%;margin-top: 2%;width:90%;">
+          {% for opt in end.journey %}
+            <tr style="border-bottom:1px solid #ccc;border-top:1px solid #ccc;">
+              <td style="width:35%;padding-top:4%;padding-bottom:2%;">
+                {% if opt.mode == 'Fly' %}
+                    <i style="margin-left:40%;color:#6b9ee8;font-size:20px;" class="fas fa-plane"></i>
+                {% elif opt.mode == 'Train' %}
+                    <i style="margin-left:40%;color:#6b9ee8;font-size:20px;" class="fas fa-subway"></i>
+                {% elif opt.mode == 'Bus' %}
+                    <i style="margin-left:40%;color:#6b9ee8;font-size:20px;" class="fas fa-bus"></i>
+                {% else %}
+                    <i style="margin-left:40%;color:#6b9ee8;font-size:20px;" class="fas fa-car"></i>
+                {% endif %}
+              </td>
+              <td style="width:55%;padding-top:3%;padding-bottom:2%;">
+                 {{ opt.distance }} / {{ opt.time }}
+              </td>
+            </tr>
+          {% endfor %}
+        </table>
+      </div>
+  </div>
+  <div id="mapdiv" class="col-5" style="position:relative;top:27%;width:100%;">
+    <div id="map" style="margin-left:-10%;width:100%;border-radius:5px;border-style:double;border-color: #999;border-width:5px;box-sizing:border-box;height:400px;"></div>
+  </div>
+</div>
+
+<div class="hotels" style="padding-left:5%;padding-top:2%;margin-top:3%;margin-left:0%;width:100%;height:550px;background-size:cover;background-image:linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('{% static 'hotel.jpg' %}')">
+  <h2 style="color:#f3f3f3;">FIND YOUR HOTEL</h2>
+  <div class="row">
+    <div id="hotel" style="height:450px;" class="col-7">
+
+    </div>
+    <div class="col-5">
+      <div id="locationField">
+        <input id="autocomplete" placeholder="Enter a city" type="text" />
+        <!-- <div class="form__list-item">
+          <input id="autocomplete" type="text" name="first_name" placeholder="First Name" class="form__input" />
+          <label for="first_name" class="form__label">First Name</label>
+        </div> -->
+      </div>
+
+      <div style="display:none;" id="controls">
+        <select id="country">
+          <option value="all" selected>All</option>
+          <option value="au">Australia</option>
+          <option value="br">Brazil</option>
+          <option value="ca">Canada</option>
+          <option value="fr">France</option>
+          <option value="de">Germany</option>
+          <option value="mx">Mexico</option>
+          <option value="nz">New Zealand</option>
+          <option value="it">Italy</option>
+          <option value="za">South Africa</option>
+          <option value="es">Spain</option>
+          <option value="pt">Portugal</option>
+          <option value="us">U.S.A.</option>
+          <option value="uk">United Kingdom</option>
+        </select>
+      </div>
+      <br>
+      <div id="listing">
+        <table id="resultsTable">
+          <tbody id="results"></tbody>
+        </table>
+      </div>
+
+      <div style="display: none">
+        <div id="info-content">
+          <table>
+            <tr id="iw-url-row" class="iw_table_row">
+              <td id="iw-icon" class="iw_table_icon"></td>
+              <td id="iw-url"></td>
+            </tr>
+            <tr id="iw-address-row" class="iw_table_row">
+              <td class="iw_attribute_name">Address:</td>
+              <td id="iw-address"></td>
+            </tr>
+            <tr id="iw-phone-row" class="iw_table_row">
+              <td class="iw_attribute_name">Telephone:</td>
+              <td id="iw-phone"></td>
+            </tr>
+            <tr id="iw-rating-row" class="iw_table_row">
+              <td class="iw_attribute_name">Rating:</td>
+              <td id="iw-rating"></td>
+            </tr>
+            <tr id="iw-website-row" class="iw_table_row">
+              <td class="iw_attribute_name">Website:</td>
+              <td id="iw-website"></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+</div>
+
+<!-- <div style="display:block;clear:both;font-weight:bold;margin-left:22%; font-size:200%;">
+  Day 1: New Delhi
+</div>
+<br><br>
+<div class="container2">
+  <div class="" style="margin:2%;">
+    <span style="font-weight:bold;font-size:150%;">2D/1N: &nbsp;&nbsp;&nbsp;&nbsp;</span>
+    <span style="font-weight:bold;font-size:180%;color:#FFB800;">New Delhi</span>
+    <button type="button" style="float:right;">See daily plan</button>
+  </div>
+  <hr>
+  <div class="images">
+    <img src="https://cdn.pixabay.com/photo/2014/08/20/09/07/president-house-422375_960_720.jpg" />
+  </div>
+  <div class="slideshow-buttons">
+    <div class="one"></div>
+    <div class="two"></div>
+    <div class="three"></div>
+    <div class="four"></div>
+  </div>
+
+  <div class="product">
+    <span style="font-size:120%;color:#6B9EE8;">A little about New Delhi</span><br><br>
+
+    <p class="desc" style="font-size:80%;">The Nike Epic React Flyknit foam cushioning is responsive yet light-weight, durable yet soft. This creates a sensation that not only enhances the feeling of moving forward, but makes running feel fun, too.</p>
+    <br>
+    <span style="font-size:75%; font-style:italic; color:#6B9EE8">You're visit to delhi is from <b>15-02-2020</b> to <b>16-02-2020</b></span>
+
+    <br><br>
+    <div class="buttons">
+      <button class="add" style="width:60%;">More details</button>
+    </div>
+  </div>
+  <hr>
+  <table style="margin-left:3%;">
+    <tr>
+      <span style="margin-left:3%;">Highlights from this trip</span>
+    </tr>
+    <tr>
+      <br><br>
+    </tr>
+    <tr style="margin-left:20%;">
+      <td style="width:5%; margin-left:40%;"><img src="https://cdn.pixabay.com/photo/2014/08/20/09/07/president-house-422375_960_720.jpg" style="width:13vh;height:13vh;border-radius:50%;"></td>
+      <td style="width:15%;margin-left:25%; font-size:80%;">Rashtrapathi Bhavan <br> 10:00 AM, 15-02-2020</td>
+      <td style="width:5%; margin-left:40%;"><img src="https://cdn.pixabay.com/photo/2014/08/20/09/07/president-house-422375_960_720.jpg" style="width:13vh;height:13vh;border-radius:50%;"></td>
+      <td style="width:15%; margin-left:25%; font-size:80%;">Rashtrapathi Bhavan <br> 10:00 AM, 15-02-2020</td>
+      <td style="width:5%; margin-left:40%;"><img src="https://cdn.pixabay.com/photo/2014/08/20/09/07/president-house-422375_960_720.jpg" style="width:13vh;height:13vh;border-radius:50%;"></td>
+      <td style="width:15%; margin-left:25%; font-size:80%;">Rashtrapathi Bhavan <br> 10:00 AM, 15-02-2020</td>
+    </tr>
+  </table>
+</div> -->
+<br><br><br><br>
+
+<script type="text/javascript">
+  function hotelFunc(id){
+    var city_name = document.getElementsByClassName('title');
+    var input_feild = document.getElementById('autocomplete');
+
+    input_feild.value = city_name[id-1].innerHTML.split("<")[0];
+    input_feild.focus();
+  }
+</script>
+
+<script>
+  var hotel, places, infoWindow;
+  var markers = [];
+  var autocomplete;
+  // var countryRestrict = {'country': 'us'};
+  var MARKER_PATH = 'https://developers.google.com/maps/documentation/javascript/images/marker_green';
+  var hostnameRegexp = new RegExp('^https?://.+?/');
+
+  var countries = {
+    'au': {
+      center: {lat: -25.3, lng: 133.8},
+      zoom: 4
+    },
+    'br': {
+      center: {lat: -14.2, lng: -51.9},
+      zoom: 3
+    },
+    'ca': {
+      center: {lat: 62, lng: -110.0},
+      zoom: 3
+    },
+    'fr': {
+      center: {lat: 46.2, lng: 2.2},
+      zoom: 5
+    },
+    'de': {
+      center: {lat: 51.2, lng: 10.4},
+      zoom: 5
+    },
+    'mx': {
+      center: {lat: 23.6, lng: -102.5},
+      zoom: 4
+    },
+    'nz': {
+      center: {lat: -40.9, lng: 174.9},
+      zoom: 5
+    },
+    'it': {
+      center: {lat: 41.9, lng: 12.6},
+      zoom: 5
+    },
+    'za': {
+      center: {lat: -30.6, lng: 22.9},
+      zoom: 5
+    },
+    'es': {
+      center: {lat: 40.5, lng: -3.7},
+      zoom: 5
+    },
+    'pt': {
+      center: {lat: 39.4, lng: -8.2},
+      zoom: 6
+    },
+    'us': {
+      center: {lat: 37.1, lng: -95.7},
+      zoom: 3
+    },
+    'uk': {
+      center: {lat: 54.8, lng: -4.6},
+      zoom: 5
+    }
+  };
+
+  function initMaphotel() {
+    hotel = new google.maps.Map(document.getElementById('hotel'), {
+      zoom: 2,
+      center: {lat: 15, lng: 0},
+      mapTypeControl: false,
+      panControl: false,
+      zoomControl: false,
+      streetViewControl: false
+    });
+
+    infoWindow = new google.maps.InfoWindow({
+      content: document.getElementById('info-content')
+    });
+
+    // Create the autocomplete object and associate it with the UI input control.
+    // Restrict the search to the default country, and to place type "cities".
+    autocomplete = new google.maps.places.Autocomplete(
+        /** @type {!HTMLInputElement} */ (
+            document.getElementById('autocomplete')), {
+          types: ['(cities)'],
+          // componentRestrictions: countryRestrict
+        });
+    places = new google.maps.places.PlacesService(hotel);
+
+    autocomplete.addListener('place_changed', onPlaceChanged);
+
+    // Add a DOM event listener to react when the user selects a country.
+    document.getElementById('country').addEventListener(
+        'change', setAutocompleteCountry);
+  }
+
+  // When the user selects a city, get the place details for the city and
+  // zoom the map in on the city.
+  function onPlaceChanged() {
+    var place = autocomplete.getPlace();
+    if (place.geometry) {
+      hotel.panTo(place.geometry.location);
+      hotel.setZoom(15);
+      search();
+    } else {
+      document.getElementById('autocomplete').placeholder = 'Enter a city';
+    }
+  }
+
+  // Search for hotels in the selected city, within the viewport of the map.
+  function search() {
+    var search = {
+      bounds: hotel.getBounds(),
+      types: ['lodging']
+    };
+
+    places.nearbySearch(search, function(results, status) {
+      if (status === google.maps.places.PlacesServiceStatus.OK) {
+        clearResults();
+        clearMarkers();
+        // Create a marker for each hotel found, and
+        // assign a letter of the alphabetic to each marker icon.
+        for (var i = 0; i < results.length; i++) {
+          var markerLetter = String.fromCharCode('A'.charCodeAt(0) + (i % 26));
+          var markerIcon = MARKER_PATH + markerLetter + '.png';
+          // Use marker animation to drop the icons incrementally on the map.
+          markers[i] = new google.maps.Marker({
+            position: results[i].geometry.location,
+            animation: google.maps.Animation.DROP,
+            icon: markerIcon
+          });
+          // If the user clicks a hotel marker, show the details of that hotel
+          // in an info window.
+          markers[i].placeResult = results[i];
+          google.maps.event.addListener(markers[i], 'click', showInfoWindow);
+          setTimeout(dropMarker(i), i * 100);
+          addResult(results[i], i);
+        }
+      }
+    });
+  }
+
+  function clearMarkers() {
+    for (var i = 0; i < markers.length; i++) {
+      if (markers[i]) {
+        markers[i].setMap(null);
+      }
+    }
+    markers = [];
+  }
+
+  // Set the country restriction based on user input.
+  // Also center and zoom the map on the given country.
+  function setAutocompleteCountry() {
+    var country = document.getElementById('country').value;
+    if (country == 'all') {
+      autocomplete.setComponentRestrictions({'country': []});
+      hotel.setCenter({lat: 15, lng: 0});
+      hotel.setZoom(2);
+    } else {
+      autocomplete.setComponentRestrictions({'country': country});
+      hotel.setCenter(countries[country].center);
+      hotel.setZoom(countries[country].zoom);
+    }
+    clearResults();
+    clearMarkers();
+  }
+
+  function dropMarker(i) {
+    return function() {
+      markers[i].setMap(hotel);
+    };
+  }
+
+  function addResult(result, i) {
+    var results = document.getElementById('results');
+    var markerLetter = String.fromCharCode('A'.charCodeAt(0) + (i % 26));
+    var markerIcon = MARKER_PATH + markerLetter + '.png';
+
+    var tr = document.createElement('tr');
+    tr.style.backgroundColor = (i % 2 === 0 ? '#F0F0F0' : '#FFFFFF');
+    tr.onclick = function() {
+      google.maps.event.trigger(markers[i], 'click');
+    };
+
+    var iconTd = document.createElement('td');
+    var nameTd = document.createElement('td');
+    var icon = document.createElement('img');
+    icon.src = markerIcon;
+    iconTd.setAttribute('class', 'icontd');
+    icon.setAttribute('class', 'placeIcon');
+    icon.setAttribute('className', 'placeIcon');
+    var name = document.createTextNode(result.name);
+    iconTd.appendChild(icon);
+    nameTd.appendChild(name);
+    tr.appendChild(iconTd);
+    tr.appendChild(nameTd);
+    results.appendChild(tr);
+  }
+
+  function clearResults() {
+    var results = document.getElementById('results');
+    while (results.childNodes[0]) {
+      results.removeChild(results.childNodes[0]);
+    }
+  }
+
+  // Get the place details for a hotel. Show the information in an info window,
+  // anchored on the marker for the hotel that the user selected.
+  function showInfoWindow() {
+    var marker = this;
+    places.getDetails({placeId: marker.placeResult.place_id},
+        function(place, status) {
+          if (status !== google.maps.places.PlacesServiceStatus.OK) {
+            return;
+          }
+          infoWindow.open(hotel, marker);
+          buildIWContent(place);
+        });
+  }
+
+  // Load the place information into the HTML elements used by the info window.
+  function buildIWContent(place) {
+    document.getElementById('iw-icon').innerHTML = '<img class="hotelIcon" ' +
+        'src="' + place.icon + '"/>';
+    document.getElementById('iw-url').innerHTML = '<b><a href="' + place.url +
+        '">' + place.name + '</a></b>';
+    document.getElementById('iw-address').textContent = place.vicinity;
+
+    if (place.formatted_phone_number) {
+      document.getElementById('iw-phone-row').style.display = '';
+      document.getElementById('iw-phone').textContent =
+          place.formatted_phone_number;
+    } else {
+      document.getElementById('iw-phone-row').style.display = 'none';
+    }
+
+    // Assign a five-star rating to the hotel, using a black star ('&#10029;')
+    // to indicate the rating the hotel has earned, and a white star ('&#10025;')
+    // for the rating points not achieved.
+    if (place.rating) {
+      var ratingHtml = '';
+      for (var i = 0; i < 5; i++) {
+        if (place.rating < (i + 0.5)) {
+          ratingHtml += '&#10025;';
+        } else {
+          ratingHtml += '&#10029;';
+        }
+      document.getElementById('iw-rating-row').style.display = '';
+      document.getElementById('iw-rating').innerHTML = ratingHtml;
+      }
+    } else {
+      document.getElementById('iw-rating-row').style.display = 'none';
+    }
+
+    // The regexp isolates the first part of the URL (domain plus subdomain)
+    // to give a short URL for displaying in the info window.
+    if (place.website) {
+      var fullUrl = place.website;
+      var website = hostnameRegexp.exec(place.website);
+      if (website === null) {
+        website = 'http://' + place.website + '/';
+        fullUrl = website;
+      }
+      document.getElementById('iw-website-row').style.display = '';
+      document.getElementById('iw-website').textContent = website;
+    } else {
+      document.getElementById('iw-website-row').style.display = 'none';
+    }
+  }
+</script>
+
+<script>
+
+  function show(num){
+    var div = document.getElementById('id'+num.toString());
+    var text = document.getElementById('btn'+num.toString()).innerHTML;
+    //console.log(num);
+    if (text[text.length-1] == '+'){
+      text = text.slice(0, text.length-1) + '-';
+      div.style.display = 'block';
+      document.getElementById('btn'+num.toString()).innerHTML = text;
+    } else {
+      text = text.slice(0, text.length-1) + '+';
+      div.style.display = 'none';
+      document.getElementById('btn'+num.toString()).innerHTML = text;
+    }
+  }
+
+  function opt(){
+    var div = document.getElementById('opts');
+    var sym = document.getElementById('endsym').innerHTML;
+    if (sym == ' +'){
+      div.style.display = 'block';
+      document.getElementById('endsym').innerHTML = ' -';
+    } else {
+      div.style.display = 'none';
+      document.getElementById('endsym').innerHTML = ' +';
+    }
+  }
+
+  window.onscroll = function() {myFunction()};
+
+  var navbar2 = document.getElementById("navbar2");
+  var sticky = navbar2.offsetTop;
+
+  function myFunction() {
+    //console.log(map.getBoundingClientRect().y);
+    if (window.pageYOffset >= 480) {
+      navbar2.classList.add("sticky");
+    } else {
+      navbar2.classList.remove("sticky");
+    }
+  }
+</script>
+
+{% endblock %}
+
+{% block extrajs %}
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCe2otGPKiUf4Qq35MmOfDWHaQm-Cjtopw&libraries=places&callback=initMap" async defer></script>
+<script>
+  var locations = [];
+
+  function initMap() {
+    initMaphotel()
+    var styledMapType = new google.maps.StyledMapType([
+  {
+    "elementType": "geometry",
+    "stylers": [
+      {
+        "color": "#ebe3cd"
+      }
+    ]
+  },
+  {
+    "elementType": "labels.text.fill",
+    "stylers": [
+      {
+        "color": "#523735"
+      }
+    ]
+  },
+  {
+    "elementType": "labels.text.stroke",
+    "stylers": [
+      {
+        "color": "#f5f1e6"
+      }
+    ]
+  },
+  {
+    "featureType": "administrative",
+    "elementType": "geometry.stroke",
+    "stylers": [
+      {
+        "color": "#c9b2a6"
+      }
+    ]
+  },
+  {
+    "featureType": "administrative.land_parcel",
+    "elementType": "geometry.stroke",
+    "stylers": [
+      {
+        "color": "#dcd2be"
+      }
+    ]
+  },
+  {
+    "featureType": "administrative.land_parcel",
+    "elementType": "labels.text.fill",
+    "stylers": [
+      {
+        "color": "#ae9e90"
+      }
+    ]
+  },
+  {
+    "featureType": "landscape.natural",
+    "elementType": "geometry",
+    "stylers": [
+      {
+        "color": "#dfd2ae"
+      }
+    ]
+  },
+  {
+    "featureType": "poi",
+    "elementType": "geometry",
+    "stylers": [
+      {
+        "color": "#dfd2ae"
+      }
+    ]
+  },
+  {
+    "featureType": "poi",
+    "elementType": "labels.text.fill",
+    "stylers": [
+      {
+        "color": "#93817c"
+      }
+    ]
+  },
+  {
+    "featureType": "poi.park",
+    "elementType": "geometry.fill",
+    "stylers": [
+      {
+        "color": "#a5b076"
+      }
+    ]
+  },
+  {
+    "featureType": "poi.park",
+    "elementType": "labels.text.fill",
+    "stylers": [
+      {
+        "color": "#447530"
+      }
+    ]
+  },
+  {
+    "featureType": "road",
+    "elementType": "geometry",
+    "stylers": [
+      {
+        "color": "#f5f1e6"
+      }
+    ]
+  },
+  {
+    "featureType": "road.arterial",
+    "elementType": "geometry",
+    "stylers": [
+      {
+        "color": "#fdfcf8"
+      }
+    ]
+  },
+  {
+    "featureType": "road.highway",
+    "elementType": "geometry",
+    "stylers": [
+      {
+        "color": "#f8c967"
+      }
+    ]
+  },
+  {
+    "featureType": "road.highway",
+    "elementType": "geometry.stroke",
+    "stylers": [
+      {
+        "color": "#e9bc62"
+      }
+    ]
+  },
+  {
+    "featureType": "road.highway.controlled_access",
+    "elementType": "geometry",
+    "stylers": [
+      {
+        "color": "#e98d58"
+      }
+    ]
+  },
+  {
+    "featureType": "road.highway.controlled_access",
+    "elementType": "geometry.stroke",
+    "stylers": [
+      {
+        "color": "#db8555"
+      }
+    ]
+  },
+  {
+    "featureType": "road.local",
+    "elementType": "labels.text.fill",
+    "stylers": [
+      {
+        "color": "#806b63"
+      }
+    ]
+  },
+  {
+    "featureType": "transit.line",
+    "elementType": "geometry",
+    "stylers": [
+      {
+        "color": "#dfd2ae"
+      }
+    ]
+  },
+  {
+    "featureType": "transit.line",
+    "elementType": "labels.text.fill",
+    "stylers": [
+      {
+        "color": "#8f7d77"
+      }
+    ]
+  },
+  {
+    "featureType": "transit.line",
+    "elementType": "labels.text.stroke",
+    "stylers": [
+      {
+        "color": "#ebe3cd"
+      }
+    ]
+  },
+  {
+    "featureType": "transit.station",
+    "elementType": "geometry",
+    "stylers": [
+      {
+        "color": "#dfd2ae"
+      }
+    ]
+  },
+  {
+    "featureType": "water",
+    "elementType": "geometry.fill",
+    "stylers": [
+      {
+        "color": "#b9d3c2"
+      }
+    ]
+  },
+  {
+    "featureType": "water",
+    "elementType": "labels.text.fill",
+    "stylers": [
+      {
+        "color": "#92998d"
+      }
+    ]
+  }
+],{name: 'Travel Map'})
+    var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 12,
+      center: {lat: -34.397, lng: 150.644},
+      mapTypeControlOptions: {
+        mapTypeIds: ['roadmap', 'satellite', 'hybrid', 'terrain',
+                'styled_map']
+      }
+    });
+
+    map.mapTypes.set('styled_map', styledMapType);
+    map.setMapTypeId('styled_map');
+    const symbol = {
+      path: "M -2,-2 2,2 M 2,-2 -2,2",
+      strokeColor: "#292",
+      strokeWeight: 3
+    };
+
+    var latlngs = document.getElementsByClassName('latlng');
+    var names = document.getElementsByClassName('title');
+    pointer_list = [];
+    for(var i=0;i<latlngs.length;i++){
+      latlng = latlngs[i].innerHTML.split(" ");
+      pointer_list.push({lat:parseFloat(latlng[0]), lng:parseFloat(latlng[1])});
+      if(i !== latlngs.length-1){
+        latlng2 = latlngs[i+1].innerHTML.split(" ");
+        var flightPath = new google.maps.Polyline({
+          path: [
+            {lat:parseFloat(latlng[0]), lng:parseFloat(latlng[1])},
+            {lat:parseFloat(latlng2[0]), lng:parseFloat(latlng2[1])}
+          ],
+          geodesic: true,
+          strokeColor: '#FF0000',
+          strokeOpacity: 1.0,
+          strokeWeight: 2,
+          icons: [
+            {
+              icon: symbol,
+              offset: "0%"
+            },
+            {
+              icon: symbol,
+              offset: "100%"
+            }
+          ],
+        });
+        flightPath.setMap(map);
+      }
+    }
+    mark_pointers(map, pointer_list, names);
+  }
+
+  const image = "{% static 'location.png' %}";
+  function mark_pointers(map, list, names){
+    var bounds = new google.maps.LatLngBounds();
+    for(var i=0;i<list.length;i++){
+      var position = new google.maps.LatLng(parseFloat(list[i].lat), parseFloat(list[i].lng));
+      map.setCenter(position);
+      bounds.extend(position);
+      var marker = new google.maps.Marker({
+        position: position,
+        animation: google.maps.Animation.DROP,
+        title: names[i].innerHTML.split('<')[0],
+        icon: image,
+        label:(i+1).toString()
+      });
+      map.fitBounds(bounds);
+      marker.setMap(map);
+    }
+  }
+
+
+</script>
+{% endblock %}

@@ -1,0 +1,380 @@
+{% extends 'base2.html' %}
+{% load staticfiles %}
+{% load static %}
+
+{% block extrahead %}
+
+<style media="screen">
+  .dates{
+    color:#6b9ee8;
+    font-size:18px;
+    cursor:pointer;
+    font-family: Raleway;
+    font-weight: bold
+  }
+
+#example::-webkit-scrollbar {
+  display: none;
+}
+
+#example {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+  #scrollbar::-webkit-scrollbar-track
+  {
+  	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  	background-color: #F5F5F5;
+  }
+
+  #scrollbar::-webkit-scrollbar
+  {
+  	width: 5px;
+  	background-color: #F5F5F5;
+  }
+
+  #scrollbar::-webkit-scrollbar-thumb
+  {
+  	background-color: #F90;
+  }
+
+  .tooltip--left:after {
+  top: -4px;
+  left: 0;
+  -webkit-transform: translateX(-112%) translateY(0);
+          transform: translateX(-112%) translateY(0);
+}
+.tooltip--left:hover:after {
+  -webkit-transform: translateX(-110%) translateY(0);
+          transform: translateX(-110%) translateY(0);
+}
+[class^="tooltip"] {
+  position: relative;
+}
+[class^="tooltip"]:after {
+  opacity: 0;
+  visibility: hidden;
+  position: absolute;
+  content: attr(data-tooltip);
+  padding-top: -4px;
+  padding-bottom: -4px;
+  padding-left:3px;
+  padding-right:3px;
+  top: -4px;
+  font-size:12px;
+  left: -100%;
+  overflow:visible;
+  -webkit-transform: translateX(-50%) translateY(-2px);
+          transform: translateX(-50%) translateY(-2px);
+  background: grey;
+  color: white;
+  white-space: nowrap;
+  z-index: 2;
+  border-radius: 2px;
+  -webkit-transition: opacity 0.2s cubic-bezier(0.64, 0.09, 0.08, 1), -webkit-transform 0.2s cubic-bezier(0.64, 0.09, 0.08, 1);
+  transition: opacity 0.2s cubic-bezier(0.64, 0.09, 0.08, 1), -webkit-transform 0.2s cubic-bezier(0.64, 0.09, 0.08, 1);
+  transition: opacity 0.2s cubic-bezier(0.64, 0.09, 0.08, 1), transform 0.2s cubic-bezier(0.64, 0.09, 0.08, 1);
+  transition: opacity 0.2s cubic-bezier(0.64, 0.09, 0.08, 1), transform 0.2s cubic-bezier(0.64, 0.09, 0.08, 1), -webkit-transform 0.2s cubic-bezier(0.64, 0.09, 0.08, 1);
+}
+[class^="tooltip"]:hover:after {
+  display: block;
+  opacity: 1;
+  visibility: visible;
+  -webkit-transform: translateX(-50%) translateY(0);
+          transform: translateX(-50%) translateY(0);
+}
+
+.timeline {
+  border-left: 4px solid #4298C3;
+  border-bottom-right-radius: 4px;
+  border-top-right-radius: 4px;
+  background: rgba(255, 255, 255, 0.03);
+  color: black;
+  margin-left:15%;
+  font-family: 'Oswald', sans-serif;
+  letter-spacing: 0.5px;
+  position: relative;
+  line-height: 1em;
+  font-size: 1.03em;
+  padding: 20px;
+  list-style: none;
+  text-align: left;
+  font-weight: 100;
+  max-width: 90%;
+  color:#999;
+}
+.timeline h1,
+.timeline h2,
+.timeline h3 {
+  font-family: 'Oswald', sans-serif;
+  letter-spacing: 0.25px;
+  font-weight: 100;
+  font-size: 1.4em;
+}
+.timeline .event {
+  position: relative;
+}
+
+.timeline .event:last-of-type {
+  padding-bottom: 0;
+  margin-bottom: 0;
+  border: none;
+}
+.timeline .event:before,
+.timeline .event:after {
+  position: absolute;
+  top: 0;
+}
+.timeline .event:before {
+  margin-left: -75.5px;
+  top: -4px;
+  color: rgba(255, 255, 255, 0.4);
+  content: attr(data-date);
+  text-align: left;
+  font-weight: 100;
+  font-size: 0.9em;
+  min-width: 120px;
+  color: #999;
+  word-spacing:999px;
+}
+.timeline .event:after {
+  box-shadow: 0 0 0 4px #4298c3;
+  left: -26.85px;
+  background: white;
+  border-radius: 50%;
+  height: 11px;
+  width: 11px;
+  content: "";
+  top: 3px;
+}
+
+/* #header1 {
+  background-image:linear-gradient(to bottom, rgba(245, 246, 252, 0.52), rgba(117, 19, 93, 0.73)), url({% static 'landing/blogbg.jpeg' %});
+} */
+
+/* .overlay {
+  background-color: rgba(0, 0, 0, 0.7);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  z-index: 1;
+} */
+
+</style>
+
+<script src="https://kit.fontawesome.com/ea0619ce99.js" crossorigin="anonymous"></script>
+<link href="https://fonts.googleapis.com/css?family=Oswald&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+
+{% endblock %}
+
+
+{% block body %}
+<body>
+
+</body>
+<!-- <div id="navbar2" style="box-shadow: 0 4px 2px -2px gray;width:100%">
+  <div style="margin-left: 36%;">
+    <a style="color:#222831" href="/overview#navbar2">Overview</a>
+    <!-- <a href="">Timeline</a>
+    <a class="active" href="/maps#navbar2">Day-Wise Maps</a>
+    <!-- <a href="">Where to stay</a>
+  </div>
+</div> -->
+<div id="navbar2" style="box-shadow: 0 4px 2px -2px gray;width:100%">
+  <div style="margin-left: 30%;">
+    <a style="color:#222831" class="active" href="{% url 'home:plan' %}{% if id %}?id={{ id }}{% endif %}">Overview</a>
+    <a style="color:#222831" href="{% url 'home:timeline' %}{% if id %}?id={{ id }}{% endif %}">Timeline</a>
+    <a href="{% url 'home:maps' %}{% if id %}?id={{ id }}{% endif %}">Day-Wise Maps</a>
+  </div>
+</div>
+<br>
+
+<div class="header" style="margin-top:-2%;background-image:linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('{% static "mapbg.jpg" %}');background-size:cover;">
+  <div class="overlay">
+    <div class="row" style="width:100%;padding-top:2%;padding-bottom:2%;">
+      <table style="width:100%;height:100px;">
+        <tr>
+          <td style="width:35%;">
+            <div id="scrollbar" class="row" style="overflow-y:scroll;height:460px;overflow-x:hidden;">
+              <ul style="margin-left:70%;list-style-type:none;line-height:250%;">
+                {% for plan in finalplan %}
+                  {% for places in plan.places %}
+                    <li class="dates"> <span class="tooltip--left" data-tooltip="{{ plan.place }}"> {{ places.day }} </span> </li>
+                  {% endfor %}
+                {% endfor %}
+              </ul>
+            </div>
+          </td>
+          <td style="width:62%">
+            <div class="row" style="background: #fdfdfd;border:1px solid #ddd;width:100%;height:460px;padding:1%;box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);margin-left:5%;">
+              <div class="col-9">
+                <div id="map" style="width:70vh;height:50vh;margin-left:-3%;"></div>
+              </div>
+              {% for plan in finalplan %}
+                {% for places in plan.places %}
+                  <div style="display:none;margin-left:-2.5%;width:100%;" class="details col-3">
+                    <h4 style="line-height:1.2;margin-top:3%;" class="city">{{ plan.place }}</h4>
+                    <h6 style="margin-top:-2%;">{{ places.day|date:"l, d b" }}</h6><br>
+                    <div id="example" style="margin-left:-17%;margin-top:-10%;width:40vh;height:40vh;overflow-y:scroll;">
+                      <ul style="font-family: Roboto;margin-top:3%;margin-left:25%;" class="timeline">
+                        {% for area in places.places %}
+                          <li class="event" data-date="{{ area.starttime }} {{ area.endtime }}">
+                            <p class="names">{{ area.name }}</p>
+                            <p style="display:none;" class="latlngs">{{ area.lat }}:{{ area.lng }}</p>
+                          </li>
+                          {% if area.next %}
+                            <li>
+                              <p> <small style="font-family:Raleway"> <i class="fas fa-car">  {{ area.next }}</i> </small> </p>
+                            </li>
+                          {% endif %}
+                        {% endfor %}
+                      </ul>
+                    </div>
+                  </div>
+                {% endfor %}
+              {% endfor %}
+            </div>
+          </td>
+          <td style="width:3%"></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
+<br><br><br><br>
+{% endblock %}
+
+{% block extrajs %}
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCe2otGPKiUf4Qq35MmOfDWHaQm-Cjtopw&libraries=places" async defer></script>
+
+<script type="text/javascript">
+  window.onscroll = function() {myFunction()};
+
+  var navbar2 = document.getElementById("navbar2");
+  var sticky = navbar2.offsetTop;
+
+  function myFunction() {
+    if (window.pageYOffset >= 480) {
+      navbar2.classList.add("sticky");
+    } else {
+      navbar2.classList.remove("sticky");
+    }
+  }
+
+  var map;
+  var geocoder;
+
+  function renderRoute(res){
+    var directionsRenderer = new google.maps.DirectionsRenderer();
+    directionsRenderer.setMap(map);
+    directionsRenderer.setOptions({suppressMarkers:true, preserveViewport: true})
+    directionsRenderer.setDirections(res);
+  }
+
+  function initMap(i) {
+    map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 12,
+      center: {lat: -34.397, lng: 150.644}
+    });
+    //geocoder = new google.maps.Geocoder();
+    var bounds = new google.maps.LatLngBounds();
+    var directionsService = new google.maps.DirectionsService();
+
+    var arr = new Array();
+    console.log(i);
+    var names = document.getElementsByClassName("details")[i].getElementsByClassName("names");
+    var latlngs = document.getElementsByClassName("details")[i].getElementsByClassName("latlngs");
+    var city = document.getElementsByClassName("details")[i].getElementsByClassName("city")[0].innerHTML;
+    for(var j=0;j<names.length-1;j++){
+      var info = names[j].innerHTML
+      var latlng = latlngs[j].innerHTML.split(":")
+      directionsService.route(
+              {
+                origin: {query: info+", "+city},
+                destination: {query: names[j+1].innerHTML+", "+city},
+                travelMode: 'DRIVING'
+              },
+              function(response, status) {
+                if (status === 'OK') {
+                  renderRoute(response);
+                } else {
+                  window.alert('Directions request failed due to ' + status);
+                }
+              });
+      //arr.push(names[j].innerHTML);
+      var position = new google.maps.LatLng(parseFloat(latlng[0]), parseFloat(latlng[1]));
+      bounds.extend(position);
+      var marker = new google.maps.Marker({
+        map: map,
+        position: position,
+        title: info
+      });
+      map.fitBounds(bounds);
+    }
+    info = names[names.length-1].innerHTML;
+    latlng = latlngs[names.length-1].innerHTML.split(":")
+    var position = new google.maps.LatLng(parseFloat(latlng[0]), parseFloat(latlng[1]));
+    bounds.extend(position);
+    var marker = new google.maps.Marker({
+      map: map,
+      position: position,
+      title: info
+    });
+    map.fitBounds(bounds);
+    // arr.push(names[names.length-1].innerHTML);
+    // geocodeAddress(arr, city)
+  }
+
+  function geocodeAddress(arr, city){
+    var bounds = new google.maps.LatLngBounds();
+    for(var i=0;i<arr.length;i++){
+      geocoder.geocode({'address': arr[i]+", "+city}, function(results, status) {
+        if (status === 'OK') {
+          map.setCenter(results[0].geometry.location);
+          var lat = results[0].geometry.location.lat();
+          var lng = results[0].geometry.location.lng();
+          console.log(results);
+          var position = new google.maps.LatLng(lat, lng);
+          bounds.extend(position);
+          var marker = new google.maps.Marker({
+            map: map,
+            position: results[0].geometry.location,
+            title: results[0].address_components[0].long_name
+          });
+          map.fitBounds(bounds);
+        } else {
+          alert('Geocode was not successful for the following reason: ' + status);
+        }
+      });
+    }
+    var boundsListener = google.maps.event.addListener((map), 'bounds_changed', function(event) {
+        this.setZoom(14);
+        google.maps.event.removeListener(boundsListener);
+    });
+  }
+
+  window.onload = function(){
+    var dates = document.getElementsByClassName("dates");
+    var details = document.getElementsByClassName("details");
+
+    current = 0;
+    details[0].style.display = "block";
+    initMap(0);
+
+    for(var i=0;i<dates.length;i++) (function(i){
+      dates[i].onclick = function(){
+        details[current].style.display = "none";
+        details[i].style.display = "block";
+        current = i;
+        initMap(i);
+      }
+    })(i);
+  }
+
+</script>
+{% endblock %}
